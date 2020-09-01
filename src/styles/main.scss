@@ -1,0 +1,52 @@
+@import "config/_breakpoints.scss";
+@import "config/_reset.scss";
+@import "config/_fonts.scss";
+@import "config/_fonts.scss";
+@import "components/_thumbnails.scss";
+@import "components/_modal.scss";
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: "blackjack", "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+.gallery-header {
+  align-items: center;
+  background: url("../static/starry.jpg");
+  background-size: cover;
+  color: #fff;
+  display: flex;
+  font-size: 40px;
+  height: 150px;
+  justify-content: center;
+  text-align: center;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animated-title {
+  width: 300px;
+  fill: none;
+  position: relative;
+  stroke-width: 0.5px;
+
+  @include breakpoint-large-up {
+    width: 400px;
+  }
+}
+
+.animated-title__text {
+  animation: dash 25s linear forwards;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  stroke: #fff;
+}

@@ -1,0 +1,42 @@
+{
+  "name": "image-loader",
+  "version": "1.0.0",
+  "description": "A vanilla javascript image loader",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_ENV=production webpack && http-server dist/ -o",
+    "dev": "NODE_ENV=development webpack-dev-server",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scottsandersdev/image-loader.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scottsandersdev/image-loader/issues"
+  },
+  "homepage": "https://github.com/scottsandersdev/image-loader#readme",
+  "devDependencies": {
+    "@babel/preset-env": "^7.11.0",
+    "babel-jest": "^26.3.0",
+    "css-loader": "^4.2.2",
+    "file-loader": "^6.0.0",
+    "html-loader": "^1.3.0",
+    "html-webpack-plugin": "^4.3.0",
+    "jest": "^26.4.2",
+    "mini-css-extract-plugin": "^0.11.0",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^10.0.1",
+    "style-loader": "^1.2.1",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "http-server": "^0.12.3"
+  }
+}
