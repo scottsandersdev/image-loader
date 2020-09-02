@@ -57,14 +57,14 @@ beforeEach(() => {
 
 describe("Fetch image data utility", () => {
   it("fetches data from server and returns a formatted object", async () => {
-    const apiUrl =
-      "https://openaccess-api.clevelandart.org/api/artworks/?q=van%20gogh&has_image=1&limit=10&skip=0&artist=van%20gogh";
+    const API_URL =
+      "https://openaccess-api.clevelandart.org/api/artworks/?q=van%20gogh&has_image=1&artist=van%20gogh&limit=10&skip=0";
 
     const formattedData = await fetchImageData();
 
     expect(formattedData[0]).toHaveProperty("image");
     expect(global.fetch).toHaveBeenCalledTimes(1);
-    expect(global.fetch).toHaveBeenCalledWith(apiUrl);
+    expect(global.fetch).toHaveBeenCalledWith(API_URL);
     expect(currentPage).toBe(10);
   });
 

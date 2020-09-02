@@ -8,7 +8,14 @@ export let currentPage = 0;
  * Api page limit.
  * @type {number}
  */
-const pageLimit = 10;
+const PAGE_LIMIT = 10;
+
+/**
+ * Api url.
+ * @type {string}
+ */
+const API_URL =
+  "https://openaccess-api.clevelandart.org/api/artworks/?q=van%20gogh&has_image=1&artist=van%20gogh";
 
 /**
  * Formats fetched data with only the data we need.
@@ -32,7 +39,7 @@ export const fetchImageData = () => {
    * Api url.
    * @type {string}
    */
-  let url = `https://openaccess-api.clevelandart.org/api/artworks/?q=van%20gogh&has_image=1&limit=${pageLimit}&skip=${currentPage}&artist=van%20gogh`;
+  let url = `${API_URL}&limit=${PAGE_LIMIT}&skip=${currentPage}`;
 
   return fetch(url)
     .then((res) => res.json())
