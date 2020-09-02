@@ -32,7 +32,7 @@ export class App {
   async addNewThumbnails() {
     this.toggleLoadingState();
     const data = await fetchImageData();
-    const markup = `${data.map((thumb) => thumbnail(thumb)).join("")}`;
+    const markup = data.map((thumb) => thumbnail(thumb)).join("");
     this.listEl.insertAdjacentHTML("beforeend", markup);
     await this.waitForImageLoad();
     this.addModalOpenEvents();
