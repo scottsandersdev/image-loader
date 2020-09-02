@@ -62,8 +62,8 @@ export class App {
   }
 
   /**
-   * Attaches event listeners to new thumbnails to toggle
-   * its corresponding modal
+   * Reveals new thumbnails and attaches event listeners to
+   * toggle its corresponding modal
    */
   addModalOpenEvents() {
     this.thumbnails.forEach((thumb) => {
