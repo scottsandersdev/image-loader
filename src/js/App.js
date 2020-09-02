@@ -7,8 +7,8 @@ export class App {
    * Initialize variables
    */
   constructor() {
-    this.loadMoreBtn = null;
-    this.listEl = null;
+    this.loadMoreBtn = document.querySelector(".load-more-btn");
+    this.listEl = document.querySelector(".thumbnail__list");
     this.thumbnails = null;
     this.modalEl = document.querySelector(".modal");
     this.modalImage = this.modalEl.querySelector(".modal__image");
@@ -16,11 +16,9 @@ export class App {
   }
 
   /**
-   * Assignment of variables and initial rendering of app
+   * Initial rendering of app
    */
   init() {
-    this.listEl = document.querySelector(".thumbnail__list");
-    this.loadMoreBtn = document.querySelector(".load-more-btn");
     this.loadMoreBtn.addEventListener("click", () => {
       this.addNewThumbnails();
     });
