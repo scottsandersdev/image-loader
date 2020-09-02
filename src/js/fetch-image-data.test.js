@@ -1,12 +1,10 @@
-import { loadImages, currentPage } from "./load-images";
+import { fetchImageData, currentPage } from "./fetch-image-data";
 
 const returnData = {
   data: [
     {
       id: 135299,
       title: "Adeline Ravoux",
-      fun_fact:
-        "Adeline Ravoux, at age 13, was not pleased with her portrait and did not think the image resembled her. Today, a photograph exists of Adeline in her late seventies and the resemblance is truly remarkable.",
       images: {
         web: {
           url:
@@ -27,8 +25,6 @@ const returnData = {
     {
       id: 135310,
       title: "Two Poplars in the Alpilles near Saint-Rémy",
-      fun_fact:
-        "During his Saint-Rémy period, Van Gogh painted 150 canvases and some 100 drawings. He painted nature as he saw it without enhancement and felt that painting would help cure him of his illness.",
       images: {
         web: {
           url:
@@ -39,8 +35,6 @@ const returnData = {
     {
       id: 135286,
       title: "Landscape with Wheelbarrow",
-      fun_fact:
-        "Vincent van Gogh made this watercolor just over a year after beginning to work professionally as an artist.",
       images: {
         web: {
           url:
@@ -57,21 +51,28 @@ global.fetch = jest.fn(() =>
   })
 );
 
-describe("Image loader - api fetching", () => {
-  it("fetches data from server and returns a formatted object", async (done) => {
+beforeEach(() => {
+  fetch.mockClear();
+});
+
+describe("Fetch image data utility", () => {
+  it("fetches data from server and returns a formatted object", async () => {
     const apiUrl =
-      "https://openaccess-api.clevelandart.org/api/artworks/?q=van%20gogh&has_image=1&limit=10&skip=0";
+      "https://openaccess-api.clevelandart.org/api/artworks/?q=van%20gogh&has_image=1&limit=10&skip=0&artist=van%20gogh";
 
-    const cleanedData = await loadImages();
+    const formattedData = await fetchImageData();
 
-    expect(cleanedData[0]).toHaveProperty("image");
+    expect(formattedData[0]).toHaveProperty("image");
     expect(global.fetch).toHaveBeenCalledTimes(1);
     expect(global.fetch).toHaveBeenCalledWith(apiUrl);
     expect(currentPage).toBe(10);
+  });
 
-    process.nextTick(() => {
-      global.fetch.mockClear();
-      done();
-    });
+  it("Returns null when an exception occurs", async () => {
+    fetch.mockImplementationOnce(() => Promise.reject(null));
+    const formattedData = await fetchImageData();
+
+    expect(formattedData).toEqual(null);
+    expect(global.fetch).toHaveBeenCalledTimes(1);
   });
 });

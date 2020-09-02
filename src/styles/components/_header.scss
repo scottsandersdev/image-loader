@@ -1,0 +1,33 @@
+.gallery-header {
+  align-items: center;
+  background-size: cover;
+  background: url("../static/starry.jpg");
+  display: flex;
+  height: 150px;
+  justify-content: center;
+  text-align: center;
+}
+
+.animated-title {
+  fill: none;
+  position: relative;
+  stroke-width: 0.5px;
+  width: 300px;
+
+  @include breakpoint-large-up {
+    width: 400px;
+  }
+}
+
+.animated-title__text {
+  animation: dash 25s linear forwards;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  stroke: $white;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}

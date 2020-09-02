@@ -1,4 +1,4 @@
-import { loadImages, currentPage } from "./load-images";
+import { fetchImageData, currentPage } from "./fetch-image-data";
 import { thumbnail } from "./thumbnail";
 
 /** Class representing a gallery application. */
@@ -9,6 +9,7 @@ export class App {
   constructor() {
     this.loadMoreBtn = null;
     this.listEl = null;
+    this.thumbnails = null;
     this.modalEl = document.querySelector(".modal");
     this.modalImage = this.modalEl.querySelector(".modal__image");
     this.init();
@@ -23,36 +24,53 @@ export class App {
     this.loadMoreBtn.addEventListener("click", () => {
       this.addNewThumbnails();
     });
-    this.attachModalCloseEvent();
+    this.addModalCloseEvent();
     this.addNewThumbnails();
   }
 
   /**
-   * Appends thumbnail images to dom
+   * Appends thumbnail images to dom once loaded
    */
   async addNewThumbnails() {
-    this.toggleLoadMoreBtn();
-    const data = await loadImages();
+    this.toggleLoadingState();
+    const data = await fetchImageData();
     const markup = `${data.map((thumb) => thumbnail(thumb)).join("")}`;
     this.listEl.insertAdjacentHTML("beforeend", markup);
-    if (currentPage < 50) {
-      this.toggleLoadMoreBtn();
-    }
-    this.attachModalOpenEvents();
+    await this.waitForImageLoad();
+    this.addModalOpenEvents();
+    this.toggleLoadingState();
+  }
+
+  /**
+   * Listens for all new images to load
+   */
+  waitForImageLoad() {
+    this.thumbnails = document.querySelectorAll(
+      `.thumbnail[data-page="${currentPage}"]`
+    );
+
+    return new Promise((resolve, reject) => {
+      const totalImages = 10;
+      let imagesLoaded = 0;
+      this.thumbnails.forEach((thumb) => {
+        const image = thumb.querySelector(".thumbnail__image");
+        image.addEventListener("load", () => {
+          if (++imagesLoaded === totalImages) {
+            resolve("loaded");
+          }
+        });
+      });
+    });
   }
 
   /**
    * Attaches event listeners to new thumbnails to toggle
    * its corresponding modal
    */
-  attachModalOpenEvents() {
-    const thumbItems = document.querySelectorAll(
-      `.thumbnail__item[data-page="${currentPage}"]`
-    );
-
-    thumbItems.forEach((thumb) => {
+  addModalOpenEvents() {
+    this.thumbnails.forEach((thumb) => {
+      thumb.classList.remove("hidden");
       thumb.addEventListener("click", () => {
-        console.log(thumb);
         const imgUrl = thumb.getAttribute("data-image");
         this.modalImage.src = imgUrl;
         this.modalEl.classList.add("open");
@@ -64,7 +82,7 @@ export class App {
    * Attaches event listener to close modal if user clicks
    * outside the image
    */
-  attachModalCloseEvent() {
+  addModalCloseEvent() {
     this.modalEl.addEventListener("click", (e) => {
       const isClickOutside = !this.modalImage.contains(e.target);
 
@@ -77,11 +95,18 @@ export class App {
 
   /**
    * Toggles visibility and disabled property of load more
-   * button during fetch
+   * button during fetch.
    */
-  toggleLoadMoreBtn() {
-    this.loadMoreBtn.disabled = !!this.loadMoreBtn.disabled;
-    this.loadMoreBtn.classList.toggle("hidden");
+  toggleLoadingState() {
+    this.loadMoreBtn.disabled = !this.loadMoreBtn.disabled;
+    if (currentPage < 50) {
+      this.loadMoreBtn.classList.toggle("loading");
+    } else {
+      this.loadMoreBtn.classList.toggle("hidden");
+    }
+    if (currentPage === 10) {
+      document.querySelector(".loading-spinner").classList.add("hidden");
+    }
   }
 }
 

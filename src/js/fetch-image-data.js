@@ -15,7 +15,7 @@ let pageLimit = 10;
  * @param  Object[] els
  * @returns {Object[]}
  */
-const createObjects = (els) => {
+const formatObjects = (els) => {
   return els.map((el) => ({
     image: el.images.web.url,
     title: el.title,
@@ -27,20 +27,23 @@ const createObjects = (els) => {
  * Fetches new thumbnail data from api.
  * @returns {Object[]}
  */
-export const loadImages = () => {
+export const fetchImageData = () => {
   /**
    * Api url.
    * @type {string}
    */
-  let url = `https://openaccess-api.clevelandart.org/api/artworks/?q=van%20gogh&has_image=1&limit=${pageLimit}&skip=${currentPage}`;
+  let url = `https://openaccess-api.clevelandart.org/api/artworks/?q=van%20gogh&has_image=1&limit=${pageLimit}&skip=${currentPage}&artist=van%20gogh`;
 
   return fetch(url)
     .then((res) => res.json())
     .then((json) => {
       currentPage += 10;
-      return createObjects(json.data);
+      return formatObjects(json.data);
     })
-    .catch((err) => err);
+    .catch((err) => {
+      console.log(err);
+      return err;
+    });
 };
 
-export default { loadImages, currentPage };
+export default { fetchImageData, currentPage };
