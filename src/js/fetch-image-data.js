@@ -8,7 +8,7 @@ export let currentPage = 0;
  * Api page limit.
  * @type {number}
  */
-let pageLimit = 10;
+const pageLimit = 10;
 
 /**
  * Formats fetched data with only the data we need.
